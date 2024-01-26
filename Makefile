@@ -128,6 +128,7 @@ UPROGS=\
 	$U/_rm\
 	$U/_sleep\
 	$U/_pingpong\
+	$U/_primes\
 	$U/_sh\
 	$U/_stressfs\
 	$U/_usertests\
