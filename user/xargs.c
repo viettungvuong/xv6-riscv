@@ -1,7 +1,7 @@
 #include "kernel/types.h"
-#include "kernel/stat.h"
 #include "user/user.h"
 #include "kernel/param.h"
+#include "kernel/stat.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     char buf[4096];
     char *ptr = &buf[0];
     int offset = 0;
-    while ((c = getchar()) != EOF)
+    while (read(0, &c, 1) > 0)
     {
         if (c == ' ')
         {
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
             if (!fork())
             {
-                exec(args[0], args);
+                exit(exec(args[0], args));
             }
 
             wait(0);

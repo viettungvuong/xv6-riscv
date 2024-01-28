@@ -53,7 +53,7 @@ void find(int fd, char *dir, char *name)
             }
             find(sub, path, name);
         }
-        }
+    }
 }
 
 int main(int argc, char *argv[])
