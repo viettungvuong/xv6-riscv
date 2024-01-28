@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
 
         read(cp[0], buf, sizeof(buf));
         printf("%d: received %s\n", getpid(), buf);
-
-        exit(0);
     }
     else // parent reads byte from child
     {
@@ -32,6 +30,7 @@ int main(int argc, char *argv[])
         printf("%d: received %s\n", getpid(), buf);
 
         write(cp[1], "pong", strlen("pong"));
-        exit(0);
     }
+
+    exit(0);
 }
