@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
         close(cp[1]);
 
         write(pc[1], "ping", strlen("ping"));
-
         read(cp[0], buf, sizeof(buf));
         printf("%d: received %s\n", getpid(), buf);
     }
