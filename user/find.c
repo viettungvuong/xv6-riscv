@@ -3,14 +3,16 @@
 #include "user/user.h"
 #include "kernel/fs.h"
 
+// '.' Matches any single character.​​​​
+// '*' Matches zero or more of the preceding element.
 int match(char *s, char *p)
 {
     if (!*p)
         return !*s;
     if (*(p + 1) != '*')
-        return (*s == *p || (*p == '.' && *s != '\0')) && match(s + 1, p + 1);
+        return *s == *p || (*p == '.' && *s != '\0') ? match(s + 1, p + 1) : 0;
     else
-        return ((*s == *p || (*p == '.' && *s != '\0')) && match(s, p + 2)) || match(s + 1, p);
+        return *s == *p || (*p == '.' && *s != '\0') ? match(s, p + 2) || match(s + 1, p) : match(s, p + 2);
 }
 
 void find(int fd, char *dir, char *name)
@@ -34,6 +36,7 @@ void find(int fd, char *dir, char *name)
 
         struct stat st;
 
+        // check if the file is a directory
         if (stat(path, &st) < 0)
         {
             printf("find: cannot stat %s\n", path);
@@ -58,7 +61,7 @@ void find(int fd, char *dir, char *name)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 3)
+    if (argc != 3)
     {
         fprintf(2, "not enough arguments\n");
         exit(1);
