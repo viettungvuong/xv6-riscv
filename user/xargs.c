@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     { // skip program name so have to add 1
         args[i] = argv[i + 1];
     }
-    i--;
+    // i--;
 
     int c;
     char buf[4096];
