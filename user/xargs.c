@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     int pos = 0, argStart = 0;
 
-    while (read(0, &ch, 1) > 0)
+    while (true)
     {
         pos = 0, argStart = 0;
         int okay = 1;
