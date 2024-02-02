@@ -12,16 +12,23 @@ int main(int argc, char *argv[])
     }
 
     char *args[MAXARG];
+    char current_arg[512];
     int i = 0;
 
     while (read(0, &c, 1) > 0)
     {
         if (c == '\n')
         {
+            current_arg[i] = 0;
+            i = 0;
+
+            if (fork() == 0)
+            {
+            }
         }
         else
         {
-            args[i++] = c;
+            current_arg[i++] = c;
         }
     }
 
