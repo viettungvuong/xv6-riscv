@@ -3,8 +3,6 @@
 #include "kernel/param.h"
 #include "kernel/stat.h"
 
-const MAX_ARGS = 256;
-
 int main(int argc, char *argv[])
 {
     if (argc < 2)
@@ -13,11 +11,18 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    char *args[MAX_ARGS];
+    char *args[MAXARG];
     int i = 0;
 
-    while (read(0, &ch, 1) > 0)
+    while (read(0, &c, 1) > 0)
     {
+        if (c == '\n')
+        {
+        }
+        else
+        {
+            args[i++] = c;
+        }
     }
 
     exit(0);
