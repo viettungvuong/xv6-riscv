@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                wait((int *)0);
+                wait(0);
             }
         }
         else
