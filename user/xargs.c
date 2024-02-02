@@ -24,6 +24,15 @@ int main(int argc, char *argv[])
 
             if (fork() == 0)
             {
+                int current = 0;
+
+                for (int j = 0; j < argc - 1; i++)
+                {
+                    int current_len = strlen(argv[j]);
+                    args[current] = malloc(current_len + 1);
+                    current++;
+                    memcpy(args[current], argv[j], current_len + 1);
+                }
             }
         }
         else
