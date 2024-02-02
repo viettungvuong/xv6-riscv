@@ -4,34 +4,21 @@
 
 int main(int argc, char *argv[])
 {
-    char buf[512] = {0};
-    int pc[2], cp[2];
-    pipe(pc);
-    pipe(cp); // pipe for both directions
+    int p[2];
 
-    int child = fork(); // create child
+    pipe(p);
 
-    if (child != 0) // parent sends byte to child
+    int pid = fork();
+    char buf[100];
+    if (pid == 0)
     {
-        close(pc[0]);
-        close(cp[1]);
-
-        write(pc[1], "ping", strlen("ping"));
-
-        read(cp[0], buf, sizeof(buf));
-        printf("%d: received %s\n", getpid(), buf);
-
-        exit(0);
+        write(p[1], "ping", 4);
+        printf("%d : received ping\n", getpid());
     }
-    else // parent reads byte from child
+    else
     {
-        close(pc[1]);
-        close(cp[0]);
-
-        read(pc[0], buf, sizeof(buf));
-        printf("%d: received %s\n", getpid(), buf);
-
-        write(cp[1], "pong", strlen("pong"));
-        exit(0);
+        wait(0);
+        read(p[0], buf, 4);
+        printf("%d : received pong\n", getpid());
     }
 }
