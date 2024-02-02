@@ -18,57 +18,55 @@ int main(int argc, char *argv[])
         args[numArgs++] = argv[i];
     }
 
-    char current_arg[512];
-    int i = 0;
+    char current_arg[2048];
     char ch;
-    int current_in_args = 0;
 
     int pos = 0, argStart = 0;
 
     while (read(0, &ch, 1) > 0)
     {
         pos = 0, argStart = 0;
+        int okay = 1;
 
-        if (ch == '\n')
+        while (1)
         {
-            current_arg[i] = 0;
-            i = 0;
-
-            // for (int i = 0; i < current_in_args; i++)
-            // {
-            //     args[current_in_args] = NULL;
-            // }
-
-            if (fork() == 0)
+            if (read(0, &ch, 1) == 0)
             {
-
-                for (int j = 0; j < argc - 1; i++)
-                {
-                    int current_len = strlen(argv[j]);
-                    args[current_in_args] = malloc(current_len + 1);
-                    current_in_args++;
-                    memcpy(args[current_in_args], argv[j], current_len + 1);
-                }
-
-                int n = strlen(current_arg);
-
-                args[current_in_args] = malloc(n + 1);
-                memcpy(args[current_in_args++], current_arg, n + 1);
-
-                args[argc] = 0;
-
-                exec(args[0], args);
-
+                okay = 0;
                 break;
+            }
+
+            if (ch == '\n') // xuống dòng => arg mới
+            {
+                args[numArgs++] = &current_arg[argStart];
+                argStart = pos;
+                break;
+            }
+            else if (ch == ' ') // dấu cách => arg mới
+            {
+                current_arg[pos++] = 0;
+                args[numArgs++] = &current_arg[argStart];
+                argStart = pos;
             }
             else
             {
-                wait(0);
+                current_arg[pos++] = ch;
             }
+        }
+
+        if (okay == 0)
+        {
+            break;
+        }
+
+        int pid = fork();
+        if (pid == 0)
+        {
+            exec(args[0], args);
         }
         else
         {
-            current_arg[i++] = ch;
+            wait(0);
         }
     }
 
