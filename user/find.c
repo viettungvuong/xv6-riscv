@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     {
         printf("%s is not a directory\n", dir);
         close(fin);
-        exit(1)
+        exit(1);
     }
 
     find(fin, dir, name);
