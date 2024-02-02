@@ -12,13 +12,23 @@ int main(int argc, char *argv[])
     }
 
     char *args[MAXARG];
+    int numArgs = 0;
+    for (int i = 1; i < argc; i++)
+    {
+        args[numArgs++] = argv[i];
+    }
+
     char current_arg[512];
     int i = 0;
     char ch;
     int current_in_args = 0;
 
+    int pos = 0, argStart = 0;
+
     while (read(0, &ch, 1) > 0)
     {
+        pos = 0, argStart = 0;
+
         if (ch == '\n')
         {
             current_arg[i] = 0;
