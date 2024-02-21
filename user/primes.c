@@ -2,56 +2,59 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 
-void
-filter(int lpipe[])
+void primes_find(int start_pipe)
 {
-  int rpipe[2];
-  pipe(rpipe);
+  int right_pipe[2], primes[35], count = 0, prime, i = 0;
+  char num, buf[1];
 
-  int primes[50];
-  int cnt = 0;
-  char buf[1];
-
-  while ((read(lpipe[0], buf, sizeof(buf))) != 0) {
-    primes[cnt++] = buf[0];
+  for (; read(start_pipe, buf, sizeof(buf)) != 0; ++count)
+  {
+    primes[count] = buf[0];
   }
-  close(lpipe[0]);
+  close(start_pipe);
+  if (count == 0)
+  {
+    return;
+  }
 
-  if (cnt == 0) return;
-  int first = primes[0];
-  printf("prime %d\n", first);
+  // output
+  prime = primes[0];
+  printf("prime %d\n", prime);
 
-  for (int i = 1; i < cnt; i++) {
-    if (primes[i] % first != 0) {
-      char p = primes[i];
-      write(rpipe[1], &p, 1);
+  // lọc số nguyên tố
+  pipe(right_pipe);
+  for (; i < count; ++i)
+  {
+    if (primes[i] % prime != 0) // giống ý tưởng của sàng evatosthenes
+    {
+      num = primes[i]; // gửi số nguyên tố qua pipe
+      write(right_pipe[1], &num, 1);
     }
   }
-  close(rpipe[1]);
+  close(right_pipe[1]);
 
   int pid = fork();
-  if (pid == 0) {
-    //child
-    filter(rpipe);
+  if (pid == 0)
+  {
+    primes_find(right_pipe[0]);
   }
 }
 
-int
-main()
+int main(int argc, char *argv[])
 {
-  int lpipe[2];
+  int first_pipe[2];
+  char num;
 
-  pipe(lpipe);
+  pipe(first_pipe); // tạo pipe để truyền các số nguyên tố
 
-  for (int i = 2; i <= 35; i++) {
-    char p = i;
-    write(lpipe[1], &p, 1);
+  for (int i = 2; i <= 35; i++)
+  {
+    num = i;
+    write(first_pipe[1], &num, 1); // viết các số từ 2 đến 35 vào pipe
   }
-  close(lpipe[1]);
+  close(first_pipe[1]);
 
-  filter(lpipe);
-
-  wait((int *) 0);
-
-  exit(0);
+  primes_find(first_pipe[0]); // tìm số nguyên tố
+  wait(0);
+  return 0;
 }
