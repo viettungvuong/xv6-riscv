@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     char *args[MAXARG];
     int numArgs = 0;
-    for (int i = 1; i < argc; i++)
+    for (int i = 1; i < argc; i++) // bắt đầu từ 1 vì 0 là tên chương trình
     {
         args[numArgs++] = argv[i];
     }
@@ -36,17 +36,19 @@ int main(int argc, char *argv[])
                 break;
             }
 
-            if (ch == '\n') // xuống dòng => arg mới
+            if (ch == '\n') // hết dòng => kết thúc arg
             {
-                args[numArgs++] = &current_arg[argStart];
-                argStart = pos;
-                break;
+                current_arg[pos++] = 0;
+                args[numArgs++] = &current_arg[argStart]; // lưu argument đang đọc lại
+                argStart = 0;
+
+                break; // break để cho đọc dòng tiếp theo
             }
-            else if (ch == ' ') // dấu cách => arg mới
+            else if (ch == ' ') // dấu cách => kết thúc arg
             {
                 current_arg[pos++] = 0;
                 args[numArgs++] = &current_arg[argStart];
-                argStart = pos;
+                argStart = pos; // đánh dấu vị trí bắt đầu của arg mới
             }
             else
             {
