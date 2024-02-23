@@ -21,4 +21,5 @@ int main(int argc, char *argv[])
         read(p[0], buf, 4);
         printf("%d : received pong\n", getpid());
     }
+    exit(0);
 }
