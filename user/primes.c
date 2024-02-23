@@ -4,31 +4,32 @@
 
 void primes_find(int start_pipe)
 {
-  int next_pipe[2], primes[35], count = 0, prime;
+  int next_pipe[2], nums[35], curr = 0, prime;
   char num, buf[1];
 
-  while (read(start_pipe, buf, sizeof(buf)))
+  while (read(start_pipe, buf, 1))
   {
-    primes[count] = buf[0];
-    ++count;
+    nums[curr] = buf[0];
+    ++curr;
   }
   close(start_pipe);
-  if (count == 0)
+
+  if (curr == 0)
   {
     return;
   }
 
   // output
-  prime = primes[0]; // lấy số nguyên tố đầu tiên
+  prime = nums[0]; // lấy số nguyên tố đầu tiên
   printf("prime %d\n", prime);
 
   // lọc số nguyên tố
   pipe(next_pipe);
-  for (int i = 0; i < count; ++i)
+  for (int i = 0; i < curr; ++i)
   {
-    if (primes[i] % prime != 0) // giống ý tưởng của sàng evatosthenes
+    if (nums[i] % prime != 0) // giống ý tưởng của sàng evatosthenes
     {
-      num = primes[i]; // gửi số nguyên tố qua pipe
+      num = nums[i]; // gửi số nguyên tố qua pipe
       write(next_pipe[1], &num, 1);
     }
   }
