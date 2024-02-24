@@ -1,0 +1,5 @@
+1. open the folder xv6 in terminal
+2. run
+make qemu-gdb
+3. open another terminal (same folder) and run
+gdb-multiarch kernel/kernel
