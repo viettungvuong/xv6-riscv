@@ -1,5 +1,8 @@
-1. open the folder xv6-riscv in terminal
-2. run
+1. in home/user_name
+create file .gdbinit and paste line
+add-auto-load-safe-path /home/user_name/...<path>.../xv6-riscv/.gdbinit
+2. open the folder xv6-riscv in terminal
+3. run
 make qemu-gdb
-3. open another terminal (same folder) and run
+4. open another terminal (same folder) and run
 gdb-multiarch kernel/kernel
